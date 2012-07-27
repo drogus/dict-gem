@@ -65,7 +65,7 @@ describe "get_translations" do
 end
 
 describe "CLI::Runner" do
-  HELP_MSG = "Przykład użycia: dict SŁOWO [OPCJE]\nWyszukaj SŁOWO w dict, open-source'owym agregatorze słowników. \n\n    -h, --help         Wyświetl pomoc\n    -t, --time         Ustaw limit czasu żądania w sekundach. Domyślnie: 300\n    -d, --dict         Wybierz słownik. Dostępne są : wiktionary, glosbe\n    -v, --version      Informacje o gemie, autorach, licencji\n    -c, --clean        Nie wyświetlaj przykładów użycia"
+  HELP_MSG = "Przykład użycia: dict SŁOWO [OPCJE]\nWyszukaj SŁOWO w dict, open-source'owym agregatorze słowników.\n\n    -h, --help         Wyświetl pomoc\n    -t, --time         Ustaw limit czasu żądania w sekundach. Domyślnie: 300\n    -d, --dict         Wybierz słownik. Dostępne są : wiktionary, glosbe\n    -v, --version      Informacje o gemie, autorach, licencji\n    -c, --clean        Nie wyświetlaj przykładów użycia"
   DICT_MSG = "Brakujący argument. Spodziewano: wiktionary, glosbe"
   TIME_MSG = "Brakujący argument. Spodziewano: liczba sekund"
   T_MSG = "Nieprawidłowa wartość czasu."
