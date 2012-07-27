@@ -112,27 +112,30 @@ Wyszukaj SŁOWO w dict, open-source'owym agregatorze słowników.
 
         if opts.help?
           abort(opts.to_s)
-        elsif opts.version?
+        end
+
+        if opts.version?
           abort(VERSION)
-        elsif opts.time?
+        end
+
+        if opts.time?
           if (opts[:time].to_i) == 0
             abort("Nieprawidłowa wartość czasu.")
-          else
-            print_all_dictionaries_translations(get_translations(opts, ARGV[0]))
           end
+        end
+
+        if !parameters_valid?
+          abort(MSG)
+        end
+
+        translations = get_translations(opts, ARGV[0])
+        if opts.clean? && !opts.dict?
+          print_translations(clean_translation(translations))
         else
-          if !parameters_valid?
-            abort(MSG)
+          if opts.dict?
+            print_translations(translations)
           else
-            if opts.clean? && !opts.dict?
-              print_translations(clean_translation(get_translations(opts, ARGV[0])))
-            else
-              if opts.dict?
-                print_translations(get_translations(opts, ARGV[0]))
-              else
-                print_all_dictionaries_translations(get_translations(opts, ARGV[0]))
-              end
-            end
+            print_all_dictionaries_translations(translations)
           end
         end
       rescue Timeout::Error
