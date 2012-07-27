@@ -19,7 +19,7 @@ module Dict
         opts = Slop.parse! do
           banner <<-END
 Przykład użycia: dict SŁOWO [OPCJE]
-Wyszukaj SŁOWO w dict, open-source'owym agregatorze słowników. 
+Wyszukaj SŁOWO w dict, open-source'owym agregatorze słowników.
           END
 
           on '-h', :help=, 'Wyświetl pomoc', :argument => :optional
@@ -27,7 +27,7 @@ Wyszukaj SŁOWO w dict, open-source'owym agregatorze słowników.
           on '-d', :dict=, "Wybierz słownik. Dostępne są : #{Dict.available_dictionaries.join(', ')}"
           on '-v', :version=, "Informacje o gemie, autorach, licencji", :argument => :optional
           on '-c', :clean=, "Nie wyświetlaj przykładów użycia", :argument => :optional
-          
+
         end
       end
 
@@ -55,7 +55,7 @@ Wyszukaj SŁOWO w dict, open-source'owym agregatorze słowników.
       end
 
       MSG = "Przykład użycia: dict SŁOWO [OPCJE]\n `dict --help, aby uzyskać więcej informacji.\n"
-      VERSION = "dict wersja #{Dict::VERSION}\nWyszukaj SŁOWO w dict, open-source'owym agregatorze słowników. \nCopyright (C) 2012 by\nZespół:\n  Jan Borwin\n  Mateusz Czerwiński\n  Kosma Dunikowski\n  Aleksander Gozdek\n  Rafał Ośko\n  Michał Podlecki\nMentorzy:\n  Grzegorz Kołodziejski\n  Michał Kwiatkowski\nLicencja: MIT\nStworzono na praktykach w : http://ragnarson.com/\nHosting: Shelly Cloud :\t http://shellycloud.com/\nStrona domowa:\t\t http://github.com/Ragnarson/dict-gem/\nSłowniki:\t\t http://wiktionary.org/\n\t\t\t http://glosbe.com/\n" 
+      VERSION = "dict wersja #{Dict::VERSION}\nWyszukaj SŁOWO w dict, open-source'owym agregatorze słowników. \nCopyright (C) 2012 by\nZespół:\n  Jan Borwin\n  Mateusz Czerwiński\n  Kosma Dunikowski\n  Aleksander Gozdek\n  Rafał Ośko\n  Michał Podlecki\nMentorzy:\n  Grzegorz Kołodziejski\n  Michał Kwiatkowski\nLicencja: MIT\nStworzono na praktykach w : http://ragnarson.com/\nHosting: Shelly Cloud :\t http://shellycloud.com/\nStrona domowa:\t\t http://github.com/Ragnarson/dict-gem/\nSłowniki:\t\t http://wiktionary.org/\n\t\t\t http://glosbe.com/\n"
 
      # Returns array without duplicates
       def clean_translation(results)
@@ -67,7 +67,7 @@ Wyszukaj SŁOWO w dict, open-source'owym agregatorze słowników.
         end
         clean.uniq
       end
-      
+
       # Prints translations from all dictionaries
       def print_all_dictionaries_translations(results)
         results.each do |dictionary, translations_hash|
@@ -90,13 +90,19 @@ Wyszukaj SŁOWO w dict, open-source'owym agregatorze słowników.
           end
         end
       end
-      
+
       # Prints array elements one by one vertically
       def print_array(arr)
-        puts "Znaleziono: #{arr.size} tłumaczeń"
+        translations_string = case arr.size
+          when 1 then "tłumaczenie"
+          when 2..4 then "tłumaczenia"
+          else "tłumaczeń"
+        end
+
+        puts "Znaleziono: #{arr.size} #{translations_string}"
         arr.each { |el| puts "- #{el}" }
       end
-     
+
       def run
         begin
           opts = parse_parameters
@@ -105,7 +111,7 @@ Wyszukaj SŁOWO w dict, open-source'owym agregatorze słowników.
           description = expected_argument_description(incomplete_option)
           abort("Brakujący argument. Spodziewano: #{description}")
         end
-            
+
         if opts.help?
           abort(opts.to_s)
         elsif opts.version?
@@ -125,7 +131,7 @@ Wyszukaj SŁOWO w dict, open-source'owym agregatorze słowników.
             else
               if opts.dict?
                 print_translations(get_translations(opts, ARGV[0]))
-              else 
+              else
                 print_all_dictionaries_translations(get_translations(opts, ARGV[0]))
               end
             end
