@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Class, which provides using application in Command Line Interface.
-
 require 'dict/dict'
 require 'dict/version'
 require 'slop'
@@ -9,6 +7,7 @@ require 'timeout'
 
 module Dict
   module CLI
+    # Class, which provides using application in Command Line Interface.
     class Runner
 
       def parameters_valid?
@@ -22,17 +21,17 @@ Przykład użycia: dict SŁOWO [OPCJE]
 Wyszukaj SŁOWO w dict, open-source'owym agregatorze słowników.
           END
 
-          on '-h', :help=, 'Wyświetl pomoc', :argument => :optional
+          on '-h', :help, 'Wyświetl pomoc'
           on '-t', :time=, 'Ustaw limit czasu żądania w sekundach. Domyślnie: 300', :as => :int
           on '-d', :dict=, "Wybierz słownik. Dostępne są : #{Dict.available_dictionaries.join(', ')}"
-          on '-v', :version=, "Informacje o gemie, autorach, licencji", :argument => :optional
-          on '-c', :clean=, "Nie wyświetlaj przykładów użycia", :argument => :optional
+          on '-v', :version, "Informacje o gemie, autorach, licencji"
+          on '-c', :clean, "Nie wyświetlaj przykładów użycia"
 
         end
       end
 
       def get_translations(opts, word)
-         Timeout::timeout(opts[:time].to_i || 300) do
+        Timeout::timeout(opts[:time].to_i || 300) do
           if opts.dict?
             Dict.get_single_dictionary_translations(word, opts[:dict])
           else
@@ -55,7 +54,7 @@ Wyszukaj SŁOWO w dict, open-source'owym agregatorze słowników.
       MSG = "Przykład użycia: dict SŁOWO [OPCJE]\n `dict --help, aby uzyskać więcej informacji.\n"
       VERSION = "dict wersja #{Dict::VERSION}\nWyszukaj SŁOWO w dict, open-source'owym agregatorze słowników. \nCopyright (C) 2012 by\nZespół:\n  Jan Borwin\n  Mateusz Czerwiński\n  Kosma Dunikowski\n  Aleksander Gozdek\n  Rafał Ośko\n  Michał Podlecki\nMentorzy:\n  Grzegorz Kołodziejski\n  Michał Kwiatkowski\nLicencja: MIT\nStworzono na praktykach w : http://ragnarson.com/\nHosting: Shelly Cloud :\t http://shellycloud.com/\nStrona domowa:\t\t http://github.com/Ragnarson/dict-gem/\nSłowniki:\t\t http://wiktionary.org/\n\t\t\t http://glosbe.com/\n"
 
-     # Returns array without duplicates
+      # Returns array without duplicates
       def clean_translation(results)
         clean = []
         results.each do |_, translations_hash|
@@ -110,22 +109,12 @@ Wyszukaj SŁOWO w dict, open-source'owym agregatorze słowników.
           abort("Brakujący argument. Spodziewano: #{description}")
         end
 
-        if opts.help?
-          abort(opts.to_s)
-        end
+        abort(opts.to_s) if opts.help?
+        abort(VERSION) if opts.version?
+        abort(MSG) if not parameters_valid?
 
-        if opts.version?
-          abort(VERSION)
-        end
-
-        if opts.time?
-          if (opts[:time].to_i) == 0
-            abort("Nieprawidłowa wartość czasu.")
-          end
-        end
-
-        if !parameters_valid?
-          abort(MSG)
+        if opts.time? and (opts[:time].to_i) == 0
+          abort("Nieprawidłowa wartość czasu.")
         end
 
         translations = get_translations(opts, ARGV[0])

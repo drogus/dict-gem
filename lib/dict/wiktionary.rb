@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Class fetching translations of given word from wiktionary.org.
-
 require 'nokogiri'
 require 'dict/dictionary'
 
 module Dict
+  # Class fetching translations of given word from wiktionary.org.
   class Wiktionary < Dictionary
 
     # Returns an Dict::Result object.
-    def translate 
+    def translate
       translations.each do |translation|
         @result.add_translation(@result.term, translation.gsub(/(\s[^|\s]+\|)/,' '))
         examples(translation).each { |example| @result.add_example(translation, example) }
@@ -67,14 +66,14 @@ module Dict
 
     def examples(word)
       url_pl = "http://pl.wiktionary.org/w/index.php?title=#{word}&action=edit"
-      
+
       if @is_polish
         extract_english_examples(word)
       else
         []
       end
     end
-    
+
     # Returns an array containing usage examples of translated polish word to english.
     def extract_english_examples(word)
       word = word.gsub(/\s+\(.+$/,'') || ''

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# It is a base class for classes fetching results from Web dictionaries.
-
 require 'open-uri'
 require 'dict/result'
 
 module Dict
+  # It is a base class for classes fetching results from Web dictionaries.
   class Dictionary
 
     def initialize(word)
@@ -13,7 +12,7 @@ module Dict
       @word = downcase_word(word)
       @result = Dict::Result.new(@word)
     end
-    
+
     # Returns an instance of URI::HTTP class.
     def uri(url, word = nil)
       word == nil ? URI(URI.escape(url)) : URI(URI.escape(url + word.downcase.tr(' ', '_')))
@@ -35,7 +34,7 @@ module Dict
         @original = original
       end
     end
-    
+
     private
     # Returns a word with all downcased letters, including polish
     def downcase_word(word)
