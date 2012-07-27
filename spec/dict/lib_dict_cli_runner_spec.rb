@@ -57,10 +57,10 @@ describe "get_translations" do
   it "should return timeout message for word słowik and -t 5" do
     stub_const("ARGV", ["słowik","-t","5"])
     runner = Dict::CLI::Runner.new
-    opts = runner.parse_parameters
     Dict.should_receive(:get_all_dictionaries_translations).
       and_return { sleep 20 }
-    runner.get_translations(opts, "słowik").should == "Upłynął limit czasu żądania."
+    runner.should_receive(:puts).with("Upłynął limit czasu żądania.");
+    runner.run
   end
 end
 

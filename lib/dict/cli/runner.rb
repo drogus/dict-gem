@@ -39,8 +39,6 @@ Wyszukaj SŁOWO w dict, open-source'owym agregatorze słowników.
             Dict.get_all_dictionaries_translations(word)
           end
         end
-      rescue Timeout::Error
-        "Upłynął limit czasu żądania."
       end
 
       def expected_argument_description(option)
@@ -137,6 +135,8 @@ Wyszukaj SŁOWO w dict, open-source'owym agregatorze słowników.
             end
           end
         end
+      rescue Timeout::Error
+        puts "Upłynął limit czasu żądania."
       end
     end
   end
