@@ -21,12 +21,10 @@ module Dict
     # Returns hash with structure as showed below
     # { 'TRANSLATION' => ['EXAMPLE', ...], ... }
     def get_single_dictionary_translations(word, dictionary)
-      case dictionary
-        when 'wiktionary'
-          Wiktionary.new(word).translate.translations
-        when 'glosbe'
-          Glosbe.new(word).translate.translations
-        else Dictionary.message
+      if available_dictionaries.include? dictionary
+        Dict.const_get(dictionary.capitalize).new(word).translate.translations
+      else
+        Dictionary.message
       end
     end
 
