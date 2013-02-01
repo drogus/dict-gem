@@ -26,7 +26,11 @@ module Dict
 
     # checks if given word is polish
     def is_polish?(doc)
-      !doc.empty? && doc.at_css('.content_box_rounded p').nil?
+      return false if doc.empty?
+      s = doc.css("h1#phraseHeaderId small").text
+      return false if s.empty?
+      return false if s.include?("po angielsku")
+      true
     end
 
     # returns instance of Nokogiri::HTML module
@@ -42,7 +46,7 @@ module Dict
     # ['TRANSLATION1', 'TRANSLATION2', ...]
     def get_translations(doc)
       translations = []
-      doc.css('.phrase-container > .translation').each { |translation| translations.push(translation.text.downcase) } if !doc.empty?
+      doc.css("div#phraseTranslation ul li strong").each { |translation| translations.push(translation.text.downcase) } unless doc.empty?
       translations
     end
 

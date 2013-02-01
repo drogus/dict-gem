@@ -37,16 +37,16 @@ end
 
 describe "get_translations" do
   it "should return results from wiktionary and glosbe for word 'słowik'" do
-    VCR.use_cassette('translations_slownik_cassette') do
+    VCR.use_cassette('translations_slownik_cassette', :re_record_interval => 7.days) do
       stub_const("ARGV", ["słowik"])
       runner = Dict::CLI::Runner.new
       opts = runner.parse_parameters
-      runner.get_translations(opts, "słowik").should == {"wiktionary" => {"słowik" => ["nightingale"]}, "glosbe" => {"słowik" => ["nightingale", "bulbul"]}}
+      runner.get_translations(opts, "słowik").should == {"wiktionary"=>{"słowik"=>["nightingale"]}, "glosbe"=>{"słowik"=>["nightingale", "thrush nightingale", "bulbul"]}}
     end
   end
 
   it "should return results from selected dictionary for word 'słowik'" do
-    VCR.use_cassette('translations_slownik_cassette') do
+    VCR.use_cassette('translations_slownik_cassette', :re_record_interval => 7.days) do
       stub_const("ARGV", ["słowik", "-d", "wiktionary"])
       runner = Dict::CLI::Runner.new
       opts = runner.parse_parameters
@@ -112,7 +112,7 @@ describe "CLI::Runner" do
       stub_const("ARGV",["słowik","--clean"])
       runner = Dict::CLI::Runner.new
       opts = runner.parse_parameters
-      runner.clean_translation(runner.get_translations(opts, ARGV[0])).should == ["nightingale", "bulbul"]
+      runner.clean_translation(runner.get_translations(opts, ARGV[0])).should == ["nightingale"]
     end
   end
 

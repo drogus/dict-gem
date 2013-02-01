@@ -5,7 +5,8 @@ require 'active_support/all'
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/dict/vcr_cassettes'
   c.hook_into :fakeweb
-  c.allow_http_connections_when_no_cassette = true  
+  c.allow_http_connections_when_no_cassette = true
+  c.default_cassette_options = { :record => :new_episodes }
 end
 
 
