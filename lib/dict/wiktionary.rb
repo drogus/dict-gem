@@ -41,7 +41,11 @@ module Dict
         extract_polish_translations(content_pl)
       else
         @is_polish = false
-        extract_english_translations(get_html(url_en).css('textarea#wpTextbox1').first.content)
+        if textarea = get_html(url_en).css('textarea#wpTextbox1').first
+          extract_english_translations(textarea.content)
+        else
+          []
+        end
       end
     end
 
